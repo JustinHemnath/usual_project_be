@@ -1,5 +1,5 @@
-const { pgTable, varchar, timestamp } = require("drizzle-orm/pg-core");
-const { sql } = require("drizzle-orm");
+import { pgTable, varchar, timestamp } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 export const users = pgTable("users", {
   name: varchar({ length: 100 }),

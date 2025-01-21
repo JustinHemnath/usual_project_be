@@ -1,9 +1,9 @@
-const express = require("express");
-const cors = require("cors");
-const { drizzle } = require("drizzle-orm/postgres-js");
-const postgres = require("postgres");
+import express from "express";
+import cors from "cors";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 
-const usersRoute = require("./routes/user.route");
+import usersRoute from "./routes/user.route.js";
 
 const app = express();
 const port = 8000;

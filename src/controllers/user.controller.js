@@ -1,6 +1,7 @@
-const { drizzle } = require("drizzle-orm");
-const { users } = require("../db/schema");
-// import * as schema from './schema';
+import { drizzle } from "drizzle-orm/postgres-js";
+// import { drizzle } from "drizzle-orm";
+// import { users } from "../db/schema.js";
+import * as schema from "../db/schema.js";
 
 // const db = drizzle(process.env.DATABASE_URL);
 const db = drizzle({ schema });
