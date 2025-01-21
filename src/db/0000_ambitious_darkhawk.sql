@@ -3,8 +3,13 @@
 /*
 CREATE TABLE "users" (
 	"name" varchar(100),
-	"email" varchar(100) PRIMARY KEY NOT NULL,
-	"created_at" timestamp with time zone NOT NULL
+	"email" varchar(100) PRIMARY KEY NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "messages" (
+	"sender" varchar(100) NOT NULL,
+	"receiver" varchar(100) NOT NULL,
+	"message" text NOT NULL
 );
 
 */
