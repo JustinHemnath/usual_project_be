@@ -1,5 +1,6 @@
 import { db } from "../db/db.js";
-import { users } from "../db/schema.js";
+import { users, messages } from "../db/schema.js";
+import { and } from "drizzle-orm";
 
 export async function getUsers(req, res) {
   const usersData = await db.query.users.findMany();
@@ -21,18 +22,24 @@ export async function validateUser(req, res) {
     await db.insert(users).values({ name: userToValidate.name, email: userToValidate.email });
 
     res.status(200).send({
-      action: "new register",
+      action: "registered",
       metaData: {
         users,
       },
     });
   } else {
+    const currentUserEmail = userToValidate.email;
+    const allUserMessages = await db
+      .select()
+      .from(messages)
+      .where(and(eq(messages.sender, currentUserEmail), eq(messages.receiver, currentUserEmail)));
+
+    res.status(200).send({
+      action: "validated",
+      metaData: {
+        users,
+        messages: allUserMessages,
+      },
+    });
   }
-
-  res.send("Post");
-}
-
-export async function postUser(req, res) {
-  await db.insert(users).values({ name: "Andrew", email: "andrew@gmail.com" });
-  res.send("posted");
 }
