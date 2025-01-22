@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model messages {
+  sender   String   @db.VarChar(100)
+  receiver String   @db.VarChar(100)
+  message  String
+  sent_at  DateTime @db.Timestamptz(6)
+  id       String   @id @db.Uuid
+}
+
+model users {
+  name  String? @db.VarChar(100)
+  email String  @id(map: "email") @db.VarChar(100)
+}
