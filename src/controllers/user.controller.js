@@ -1,6 +1,6 @@
 import { db } from "../db/db.js";
 import { users, messages } from "../db/schema.js";
-import { and } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 export async function getUsers(req, res) {
   const usersData = await db.query.users.findMany();
@@ -42,4 +42,17 @@ export async function validateUser(req, res) {
       },
     });
   }
+}
+
+export async function postMessages(req, res) {
+  const currentUserEmail = req.body?.email;
+
+  const allUserMessages = await db
+    .select()
+    .from(messages)
+    .where(and(eq(messages.sender, currentUserEmail), eq(messages.receiver, currentUserEmail)));
+
+  console.log({ allUserMessages });
+
+  res.status(200).send("HELLOOOO");
 }

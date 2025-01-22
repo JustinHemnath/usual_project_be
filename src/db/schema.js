@@ -1,4 +1,4 @@
-import { pgTable, varchar, text } from "drizzle-orm/pg-core";
+import { pgTable, varchar, text, timestamp } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 export const users = pgTable("users", {
@@ -10,4 +10,5 @@ export const messages = pgTable("messages", {
   sender: varchar({ length: 100 }).notNull(),
   receiver: varchar({ length: 100 }).notNull(),
   message: text().notNull(),
+  sentAt: timestamp("sent_at", { withTimezone: true, mode: "string" }).notNull(),
 });

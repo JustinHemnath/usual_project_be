@@ -9,7 +9,8 @@ CREATE TABLE "users" (
 CREATE TABLE "messages" (
 	"sender" varchar(100) NOT NULL,
 	"receiver" varchar(100) NOT NULL,
-	"message" text NOT NULL
+	"message" text NOT NULL,
+	"sent_at" timestamp with time zone NOT NULL
 );
 
 */
