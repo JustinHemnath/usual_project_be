@@ -1,6 +1,4 @@
-import { db } from "../db/db.js";
-import { users, messages } from "../db/schema.js";
-import { and, eq, or } from "drizzle-orm";
+import { prisma } from "../db/db.js";
 import fs from "node:fs";
 
 export async function getUsers(req, res) {
@@ -11,19 +9,20 @@ export async function getUsers(req, res) {
 
 export async function validateUser(req, res) {
   const userToValidate = req.body?.user;
-  console.log({ tri: userToValidate });
 
   if (!userToValidate || !userToValidate?.name || !userToValidate?.email) {
     return res.status(400).send("User details not sent");
   }
 
-  const users = await db.query.users.findMany();
-
-  console.log({ users });
+  const users = await prisma.users.findMany();
 
   if (users.length === 0) {
-    await db.insert(users).values({ name: userToValidate.name, email: userToValidate.email });
-    console.log("Inserted");
+    await prisma.users.create({
+      data: {
+        name: userToValidate.name,
+        email: userToValidate.email,
+      },
+    });
 
     return res.status(200).send({
       action: "registered",
@@ -34,10 +33,13 @@ export async function validateUser(req, res) {
   } else {
     const isMailRegistered = users.find((user) => user.email === userToValidate.email);
 
-    console.log({ isMailRegistered });
-
     if (!isMailRegistered) {
-      await db.insert(users).values({ name: userToValidate.name, email: userToValidate.email });
+      await prisma.users.create({
+        data: {
+          name: userToValidate.name,
+          email: userToValidate.email,
+        },
+      });
 
       return res.status(200).send({
         action: "registered",
@@ -47,10 +49,23 @@ export async function validateUser(req, res) {
       });
     } else {
       const currentUserEmail = userToValidate.email;
-      const allUserMessages = await db
-        .select()
-        .from(messages)
-        .where(or(eq(messages.sender, currentUserEmail), eq(messages.receiver, currentUserEmail)));
+
+      const allUserMessages = await prisma.messages.findMany({
+        where: {
+          OR: [
+            {
+              sender: {
+                equals: currentUserEmail,
+              },
+            },
+            {
+              receiver: {
+                equals: currentUserEmail,
+              },
+            },
+          ],
+        },
+      });
 
       return res.status(200).send({
         action: "validated",
