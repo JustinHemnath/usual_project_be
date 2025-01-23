@@ -1,5 +1,6 @@
 import { prisma } from "../db/db.js";
 import fs from "node:fs";
+import { transformMessages } from "../utils/user.util.js";
 
 export async function getUsers(req, res) {
   const usersData = await db.query.users.findMany();
@@ -9,6 +10,8 @@ export async function getUsers(req, res) {
 
 export async function validateUser(req, res) {
   const userToValidate = req.body?.user;
+
+  console.log({ req: req.body });
 
   if (!userToValidate || !userToValidate?.name || !userToValidate?.email) {
     return res.status(400).send("User details not sent");
@@ -71,7 +74,7 @@ export async function validateUser(req, res) {
         action: "validated",
         metaData: {
           users,
-          messages: allUserMessages,
+          messages: transformMessages({ messages: allUserMessages, user: userToValidate }),
         },
       });
     }
