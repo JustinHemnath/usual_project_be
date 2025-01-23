@@ -6,13 +6,24 @@ export function transformMessages({ messages, user }) {
   let conversations = [];
 
   for (let message of messages) {
-    const key = message.sender === user.email ? "receiver" : "sender";
-    const otherPersonEmail = message[key];
+    let emailKey;
+    let nameKey;
+
+    if (message.sender === user.email) {
+      emailKey = "receiver";
+      nameKey = "receiver_name";
+    } else {
+      emailKey = "sender";
+      nameKey = "sender_name";
+    }
+    const otherPersonEmail = message[emailKey];
+    const otherPersonName = message[nameKey];
 
     // if no convo exists in conversations array, then add the new one
     if (conversations.length === 0) {
       conversations.push({
         otherPersonEmail,
+        otherPersonName,
         messages: [message],
       });
     } else {
@@ -22,6 +33,7 @@ export function transformMessages({ messages, user }) {
       if (convoIndex === -1) {
         conversations.push({
           otherPersonEmail,
+          otherPersonName,
           messages: [message],
         });
       } else {
