@@ -74,7 +74,7 @@ export async function validateUser(req, res) {
         action: "validated",
         metaData: {
           users,
-          messages: transformMessages({ messages: allUserMessages, user: userToValidate }),
+          conversations: transformMessages({ messages: allUserMessages, user: userToValidate }),
         },
       });
     }

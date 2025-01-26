@@ -19,5 +19,5 @@ model messages {
 
 model users {
   name  String? @db.VarChar(100)
-  email String  @id(map: "email") @unique @db.VarChar(100)
+  email String  @id(map: "email") @db.VarChar(100)
 }
