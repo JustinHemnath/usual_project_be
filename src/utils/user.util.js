@@ -52,8 +52,6 @@ export function transformMessages({ messages, user }) {
   conversations.sort((a, b) => {
     const aDate = new Date(a.lastMessage.sent_at);
     const bDate = new Date(b.lastMessage.sent_at);
-
-    //   return aDate - bDate;
     return bDate - aDate;
   });
 
