@@ -23,7 +23,7 @@ export async function messageListener(socket, io) {
     const receiverSocket = connectedSockets.find((connectedSocket) => connectedSocket.handshake === payload.receiver);
 
     if (receiverSocket) {
-      io.to(receiverSocket.id).emit(CHAT_APP_EVENTS.FROM_SERVER, insertedRecord);
+      io.to(receiverSocket.id).emit(CHAT_APP_EVENTS.TO_CLIENT, insertedRecord);
     }
   });
 }
