@@ -21,7 +21,7 @@ app.use("/users", usersRoute);
 
 io.on("connection", (socket) => {
   console.log("a user connected");
-  messageListener(socket);
+  messageListener(socket, io);
 });
 
 async function main() {
